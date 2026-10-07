@@ -2,7 +2,12 @@
 
 [![Lean Action CI](https://github.com/scream27/autoformalization_lab/actions/workflows/lean_action_ci.yml/badge.svg)](https://github.com/scream27/autoformalization_lab/actions/workflows/lean_action_ci.yml)
 
-Step 1: Lean 4 + Mathlib 환경과 피드백 경로를 확인하는 학습 프로젝트입니다.
+Lean 4 + Mathlib로 자연어 증명을 형식화하고 검증하는 학습 프로젝트입니다. 현재 주 목표는 smooth surface의 Hilbert scheme of points의 smoothness입니다.
+
+- [Hilbert scheme 전체 증명·구현 outline](docs/hilbert-scheme/outline.md)
+- [증명을 직접 검증하는 방법](docs/hilbert-scheme/verification.md)
+- [Commuting matrices와 Fogarty: 실제 Mathlib API·prototype 비교](docs/hilbert-scheme/library-route-audit.md)
+- [에이전트 작업 지침](AGENTS.md)
 
 - [WSL/Ubuntu 설치 순서](docs/step-1-setup.md)
 - [설치 확인 파일](AutoformalizationLab/SmokeTest.lean)
@@ -19,7 +24,9 @@ cd /Users/sungwoo/lean_project/autoformalization_lab
 bash scripts/check.sh
 ```
 
-Step 2는 `AutoformalizationLab/Exercises/`에서 진행합니다. 연습은 statement부터 제공하고, 막힌 경우 hint → 실제 환경에서 확인한 lemma → proof sketch 순으로 진행합니다. 연습용 `sorry`는 미완성 표시이며 완성된 라이브러리와 분리되어 있습니다.
+현재 학습 방식은 에이전트가 자연어 증명을 Lean으로 구현하고, 사용자가 해설과 검증 절차를 읽는 방식입니다. 우선 구현 경로는 commuting operators와 explicit basis charts이며, 다음 학습 예제는 `(x²,xy,y²)`의 quotient와 multiplication operators입니다. 작은 algebra prototype은 검증했지만 Hilbert scheme 전체 정리는 아직 구현되지 않았습니다.
+
+이전 Step 2의 `AutoformalizationLab/Exercises/`는 선택적인 연습 자료로 남겨 둡니다. 연습용 `sorry`는 미완성 표시이며 완성된 라이브러리와 분리되어 있습니다.
 
 ## GitHub
 
