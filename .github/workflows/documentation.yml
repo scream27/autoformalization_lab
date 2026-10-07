@@ -1,0 +1,31 @@
+name: API Documentation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'AutoformalizationLab.lean'
+      - 'AutoformalizationLab/*.lean'
+      - 'lean-toolchain'
+      - 'lakefile.toml'
+      - 'lake-manifest.json'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: api-documentation
+  cancel-in-progress: true
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v7
+      - uses: leanprover/lean-action@v1
+      - uses: leanprover-community/docgen-action@v1
+        with:
+          homepage: generated-site

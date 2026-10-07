@@ -6,7 +6,9 @@
 
 `git push → GitHub runner → Lean/Mathlib 준비 → lake build → doc-gen4 → GitHub Pages`
 
-설정은 [lean_action_ci.yml](../.github/workflows/lean_action_ci.yml)에 있습니다. `leanprover/lean-action@v1`은 Lean 프로젝트 검증을, `leanprover-community/docgen-action@v1`은 문서 생성과 배포를 담당합니다. API 문서 생성·배포는 이 docgen action 버전에서 `push` 이벤트에 실행됩니다. `pull_request`나 `workflow_dispatch`가 전체 workflow를 시작해도 문서 배포 단계는 건너뜁니다.
+검증은 [lean_action_ci.yml](../.github/workflows/lean_action_ci.yml), 문서 배포는 [documentation.yml](../.github/workflows/documentation.yml)로 분리했습니다. `leanprover/lean-action@v1`은 Lean 프로젝트 검증을, `leanprover-community/docgen-action@v1`은 문서 생성과 배포를 담당합니다. 문서는 main의 라이브러리 root, 최상위 Lean 모듈 또는 환경 설정 변경을 push할 때 생성합니다. 격리된 Exercises 파일과 Markdown 노트만 수정하면 문서 생성은 시작하지 않습니다. 완성한 연습을 root에 import하면 root 변경으로 문서 생성이 시작됩니다.
+
+Lean CI는 20분, 문서 workflow는 40분의 timeout을 두었습니다. 각 workflow의 새 실행은 같은 group의 이전 실행을 취소합니다. 분리 전에 시작한 옛 workflow에는 새 설정이 소급 적용되지 않습니다.
 
 ## 세 종류의 문서를 구분하기
 
@@ -24,7 +26,7 @@ API 문서의 설명을 늘리려면 Lean 파일에서 선언 앞에 `/-- … -/
 2. **Build and deployment → Source**를 **GitHub Actions**로 선택합니다.
 3. **Settings → Actions → General**에서 이 workflow의 action들을 실행할 수 있도록 허용합니다.
 
-**Allow GitHub Actions to create and approve pull requests**는 dependency update workflow가 PR을 만들기 위한 설정입니다. Pages의 publishing source 설정과는 다른 항목입니다. 현재 workflow에는 `contents: read`, `pages: write`, `id-token: write`가 선언되어 있습니다.
+**Allow GitHub Actions to create and approve pull requests**는 dependency update workflow가 PR을 만들기 위한 설정입니다. Pages의 publishing source 설정과는 다른 항목입니다. 문서 workflow에는 `contents: read`, `pages: write`, `id-token: write`가 선언되어 있습니다. Lean CI에는 `contents: read`만 필요합니다.
 
 ## 일상적인 사용
 
@@ -40,7 +42,7 @@ git push
 
 위 `git add`는 해당 폴더의 변경을 포함하므로 `git diff --cached`로 실제 올릴 내용을 확인합니다. Step 2를 진행하면서 proof를 완성했을 때 사용합니다. 미완성 proof에 `sorry`가 있으면 빌드 성공만으로 완성을 판정하면 안 됩니다.
 
-[Actions 목록](https://github.com/scream27/autoformalization_lab/actions)에서 **Lean Action CI**의 최신 commit 실행을 열고 `build` job을 선택합니다. **Run leanprover/lean-action@v1**은 코드 검증, **Run leanprover-community/docgen-action@v1**은 문서 생성과 Pages 배포 단계입니다. 실패하면 해당 단계의 첫 실제 error를 확인합니다.
+[Actions 목록](https://github.com/scream27/autoformalization_lab/actions)에서 **Lean Action CI**의 최신 commit 실행을 열고 `build` job을 선택하면 코드 검증 결과를 볼 수 있습니다. **API Documentation**의 `docs` job은 문서 생성과 Pages 배포입니다. 실패하면 해당 단계의 첫 실제 error를 확인합니다. 문서 workflow가 실패해도 Lean CI의 성공 결과는 별도로 남습니다.
 
 배포가 성공하면 API 문서 주소는 다음입니다.
 
@@ -57,5 +59,7 @@ git push
 ## Step 2와의 관계
 
 Step 2는 로컬 CLI와 VS Code Infoview로 바로 시작할 수 있습니다. GitHub 문서 생성은 검색과 공유를 돕는 부가 작업이며, 형식화 연습을 시작하기 위한 필수 조건이 아닙니다. 처음 생성할 때 문서 도구와 dependency 문서를 빌드하므로 일반 Lean 검증보다 오래 걸릴 수 있습니다.
+
+2026-10-07 확인한 이전 실행은 약 15분 동안 의존성 문서를 포함한 2,766개 build job을 처리해 API 문서 생성을 완료했습니다. 이후 Jekyll 단계에서 `Could not locate Gemfile or .bundle/ directory`로 실패했습니다. `generated-site` 분리 설정은 이 폴더 오인 문제를 해결하기 위해 반영한 것입니다. 최종 Pages 배포의 성공은 별도의 실제 실행 결과로 확인해야 합니다.
 
 근거: [현재 사용하는 action 소스](https://github.com/leanprover-community/docgen-action/blob/v1/action.yml), [문서 빌드 스크립트](https://github.com/leanprover-community/docgen-action/blob/v1/scripts/build_docs.sh), [GitHub Pages publishing 설정](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).

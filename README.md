@@ -10,6 +10,7 @@ Step 1: Lean 4 + Mathlib 환경과 피드백 경로를 확인하는 학습 프�
 - [로컬 실행 결과](docs/local-verification.md)
 - [오류를 분류하는 기준](docs/feedback-workflow.md)
 - [GitHub Actions와 API 문서 사용법](docs/github-actions.md)
+- [Step 2 연습 문제 — 답안 없이 시작](docs/step-2-exercises.md)
 
 로컬에서 다시 확인:
 
@@ -18,13 +19,14 @@ cd /Users/sungwoo/lean_project/autoformalization_lab
 bash scripts/check.sh
 ```
 
-Step 2 연습문제와 MacMahon function 정의는 다음 단계에서 진행합니다. 연습은 statement부터 제공하고, 막힌 경우 hint → 실제 환경에서 확인한 lemma → proof sketch 순으로 진행합니다.
+Step 2는 `AutoformalizationLab/Exercises/`에서 진행합니다. 연습은 statement부터 제공하고, 막힌 경우 hint → 실제 환경에서 확인한 lemma → proof sketch 순으로 진행합니다. 연습용 `sorry`는 미완성 표시이며 완성된 라이브러리와 분리되어 있습니다.
 
 ## GitHub
 
 원격 저장소: [scream27/autoformalization_lab](https://github.com/scream27/autoformalization_lab)
 
-- Push / Pull Request: Lean build와 문서 생성 workflow 실행.
+- Push / Pull Request: Lean 검증 workflow 실행.
+- main의 라이브러리·환경 설정 변경: 별도의 API Documentation workflow에서 문서 생성·배포.
 - Dependency update: Actions에서 수동 실행하며, 성공한 업데이트는 Pull Request로 제안.
 - `lean-toolchain` 변경: Lean release tag 생성 workflow 실행.
 
