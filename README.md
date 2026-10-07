@@ -9,6 +9,7 @@ Step 1: Lean 4 + Mathlib 환경과 피드백 경로를 확인하는 학습 프�
 - [검색 tactic 확인 파일](AutoformalizationLab/SearchDemo.lean)
 - [로컬 실행 결과](docs/local-verification.md)
 - [오류를 분류하는 기준](docs/feedback-workflow.md)
+- [GitHub Actions와 API 문서 사용법](docs/github-actions.md)
 
 로컬에서 다시 확인:
 
