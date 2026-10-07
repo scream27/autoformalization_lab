@@ -1,0 +1,18 @@
+name = "autoformalization_lab"
+version = "0.1.0"
+keywords = ["math"]
+defaultTargets = ["AutoformalizationLab"]
+
+[leanOptions]
+pp.unicode.fun = true # pretty-prints `fun a ↦ b`
+relaxedAutoImplicit = false
+weak.linter.mathlibStandardSet = true
+maxSynthPendingDepth = 3
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "e6bbacd0e1b7307ff6e17da09cd2455f60804fa6"
+
+[[lean_lib]]
+name = "AutoformalizationLab"
