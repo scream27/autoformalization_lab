@@ -11,6 +11,8 @@ on:
 jobs:
   lean-release-tag:
     name: Add Lean release tag
+    # A repository's first push has no previous commit for the action's Git range.
+    if: github.event.before != '0000000000000000000000000000000000000000'
     runs-on: ubuntu-latest
     permissions:
       contents: write
